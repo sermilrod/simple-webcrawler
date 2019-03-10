@@ -13,16 +13,14 @@ func getLinks(rootURL, url string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		defer resp.Body.Close()
 		return nil, err
 	}
 	links, err := extractLinks(rootURL, resp)
 	if err != nil {
-		defer resp.Body.Close()
 		return nil, err
 	}
-	resp.Body.Close()
 	return links, nil
 }
 
