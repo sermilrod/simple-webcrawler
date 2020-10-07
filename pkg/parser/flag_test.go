@@ -2,27 +2,25 @@ package parser
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestURLListString(t *testing.T) {
 	urlList := make(URLList, 0)
-	for _, test := range stringTestCases {
-		if result := urlList.String(); result != test.expected {
-			t.Errorf("URLListString test: expected [%s], got [%s]", test.expected, result)
-		}
+	for _, tt := range stringTestCases {
+		result := urlList.String()
+		assert.Equal(t, tt.expected, result)
 	}
 }
 
 func TestURLListSet(t *testing.T) {
 	urlList := make(URLList, 0)
-	for _, test := range setTestCases {
-		if result := urlList.Set(test.input); result != test.expected {
-			t.Errorf("URLListSet test: expected [%s], got [%s]", test.expected, result)
-		}
+	for _, tt := range setTestCases {
+		result := urlList.Set(tt.input)
+		assert.Equal(t, tt.expected, result)
 	}
-	if len(urlList) != len(setTestCases) {
-		t.Errorf("URLListSet test: expected [%d], got [%d]", len(setTestCases), len(urlList))
-	}
+	assert.Equal(t, len(urlList), len(setTestCases))
 }
 
 func BenchmarkSet(b *testing.B) {

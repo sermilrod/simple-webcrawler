@@ -3,8 +3,9 @@ package search
 import (
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetLinks(t *testing.T) {
@@ -29,20 +30,14 @@ func TestGetLinks(t *testing.T) {
 
 	links, err := getLinks(server.URL, server.URL)
 	expected := []string{"http://127.0.0.1/bibidi"}
-	if err != nil {
-		t.Errorf("getLinks test: expected err to be nil, got [%s]", err.Error())
-	}
-	if !reflect.DeepEqual(links, expected) {
-		t.Errorf("getLinks test: expected links %s, got %s", expected, links)
-	}
+	assert.Nil(t, err)
+	assert.ObjectsAreEqual(links, expected)
 }
 
 func TestRemoveDuplicates(t *testing.T) {
-	for _, test := range removeDuplicatesTestCases {
-		result := removeDuplicates(test.input)
-		if !reflect.DeepEqual(result, test.expected) {
-			t.Errorf("RemoveDuplicates test: %s, expected [%s], got [%s]", test.description, test.expected, result)
-		}
+	for _, tt := range removeDuplicatesTestCases {
+		result := removeDuplicates(tt.input)
+		assert.ObjectsAreEqual(result, tt.expected)
 	}
 }
 
